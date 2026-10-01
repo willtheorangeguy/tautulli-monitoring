@@ -1,15 +1,40 @@
-# tautulli-monitoring — Architecture
+# Architecture
 
-Tautulli API -> upstream exporter -> allowlist relay -> authenticated /metrics -> Prometheus -> Grafana.
+This project connects its data source to its Grafana dashboard through the components shown below.
+
+## Overview
+
+This diagram shows the data path for this project.
+
+```mermaid
+graph LR
+  A[Tautulli API] -->|queried by| B[scabraha tautulli-exporter]
+  B -->|filtered by| C[Allowlist relay]
+  C -->|exposes metrics to| D[Prometheus]
+  D -->|queried by| E[Grafana dashboard]
+```
 
 ## Components
 
-- [compose.yml](../compose.yml): container deployment
-- [dashboards/](../dashboards): Grafana dashboard definitions
-- [entrypoint.py](../entrypoint.py): loads the Tautulli API secret
-- [examples/](../examples): deployment and scrape examples
-- [metrics_relay.py](../metrics_relay.py): authenticated metrics filtering
+### Data source
 
-## Data interpretation
+Tautulli API -> scabraha/tautulli-exporter -> allowlist relay -> authenticated /metrics -> Prometheus -> Grafana.
 
-The relay keeps only approved metric names and labels and returns tautulli_relay_up=0 if filtering fails. The raw exporter endpoint stays private. Library play totals include retained history and are sampled as gauges.
+### Dashboard
+
+`dashboards/tautulli-application.json` contains the Grafana dashboard definition.
+
+## Data flow
+
+Tautulli API -> scabraha/tautulli-exporter -> allowlist relay -> authenticated /metrics -> Prometheus -> Grafana. Grafana evaluates dashboard queries against the selected data source and label values.
+
+## Directory layout
+
+```text
+.
+├── dashboards/  Grafana dashboard JSON files
+├── examples/  Scrape and deployment examples
+├── metrics_relay.py  Tautulli metric filtering relay
+├── docs/        Documentation source
+└── README.md    Project overview and quick links
+```

@@ -4,3 +4,11 @@ __pycache__/
 *.pyc
 api-key
 metrics-token
+site/
+.mkdocs-shared/
+docs/stylesheets/
+docs/javascript/
+docs/images/favicon.svg
+overrides/main.html
+overrides/partials/
+overrides/.icons/

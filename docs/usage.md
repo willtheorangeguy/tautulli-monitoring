@@ -1,17 +1,17 @@
-# tautulli-monitoring — Dashboard Usage
+# Dashboard usage
 
-Import the JSON files using **Grafana → Dashboards → New → Import**. Set the data source and variables listed in [configuration](./configuration.md).
+Import the JSON files using **Grafana → Dashboards → New → Import**. Set the data source and variables listed in [configuration](configuration.md).
 
 ## Tautulli Application Overview
 
-Source: [tautulli-application.json](../dashboards/tautulli-application.json). Refresh: `30s`.
+Source: [`dashboards/tautulli-application.json`](https://github.com/willtheorangeguy/tautulli-monitoring/blob/HEAD/dashboards/tautulli-application.json). Refresh: `30s`.
 
 <!-- Screenshot: after adding tautulli-application.png to .github/icons/tautulli-monitoring/, replace this comment with ![Tautulli Application Overview](https://raw.githubusercontent.com/willtheorangeguy/.github/main/icons/tautulli-monitoring/tautulli-application.png). -->
 
 ### Panels
 
 | Panel | Type | What it shows |
-|---|---|---|
+| --- | --- | --- |
 | Service Health | stat | Scrape, Tautulli API, Plex connection, and relay must all report healthy. |
 | Active Sessions | stat | Active playback sessions reported by Tautulli. |
 | Transcodes | stat | Sessions requiring transcoding. |
