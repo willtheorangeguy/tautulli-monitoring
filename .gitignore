@@ -1,0 +1,6 @@
+secrets/
+.env
+__pycache__/
+*.pyc
+api-key
+metrics-token

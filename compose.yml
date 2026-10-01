@@ -1,0 +1,35 @@
+services:
+  tautulli-exporter:
+    image: ghcr.io/scabraha/tautulli-exporter@sha256:405113e8887e448e834175fb47082ed3fcff5647f90910a2407ad44f84051826
+    container_name: tautulli-exporter
+    restart: unless-stopped
+    entrypoint: [python, /monitoring/entrypoint.py]
+    environment:
+      TAUTULLI_URL: ${TAUTULLI_URL:?Set TAUTULLI_URL}
+      ACTIVITY_POLL_INTERVAL: '30'
+      INVENTORY_POLL_INTERVAL: '300'
+      META_POLL_INTERVAL: '1800'
+      GEOIP_ENABLED: 'false'
+      LIBRARY_SIZE_ENABLED: 'false'
+      LOG_LEVEL: WARNING
+    volumes:
+      - ./api-key:/run/secrets/tautulli_api_key:ro
+      - ./entrypoint.py:/monitoring/entrypoint.py:ro
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+  tautulli-metrics-relay:
+    image: ghcr.io/scabraha/tautulli-exporter@sha256:405113e8887e448e834175fb47082ed3fcff5647f90910a2407ad44f84051826
+    container_name: tautulli-metrics-relay
+    restart: unless-stopped
+    entrypoint: [python, /monitoring/metrics_relay.py]
+    depends_on: [tautulli-exporter]
+    volumes:
+      - ./metrics-token:/run/secrets/metrics_token:ro
+      - ./metrics_relay.py:/monitoring/metrics_relay.py:ro
+    ports: ['${BIND_IP:-127.0.0.1}:9487:9487']
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]

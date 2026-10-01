@@ -1,0 +1,7 @@
+# Add these entries under scrape_configs in prometheus.yml. Replace example hosts and token paths.
+- job_name: tautulli
+  authorization:
+    type: Bearer
+    credentials_file: /etc/prometheus/secrets/tautulli-relay.token
+  static_configs:
+    - targets: [tautulli-relay.example:9487]
